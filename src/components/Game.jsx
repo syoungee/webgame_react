@@ -162,5 +162,11 @@ export default function Game() {
     setGridData(gridData);
   }
 
+  function finishGame(win){
+    const popUp = document.querySelector('.pop-up');
+    popUp.classList.remove('pop-up--hide');
+  }
+  
+
   return <Grid gridData={gridData} />;
 }
