@@ -9,7 +9,7 @@ export default function Game() {
   useEffect(() => {
     const initializedGridData = initGame(gridSize);
     setGridData(initializedGridData);
-    balloonData = [];
+    // balloonData = [];
     count(initializedGridData);
   }, [gridSize]);
 
