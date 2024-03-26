@@ -18,28 +18,27 @@ export default function Game() {
     setGridSize(size);
   };
 
+  // 가장 많은 풍선의 갯수 반환 함수
   function getMax() {
     let maxNumber = Math.max(...balloonData);
-    console.log('get max data>>', maxNumber, balloonData);
     return maxNumber;
   }
 
+  // bfs 탐색시 가도 되는 곳인지 유무 반환 함수
   function isValid(x, y, rows, columns, visited) {
     return x >= 0 && y >= 0 && x < rows && y < columns && !visited[x][y];
   }
 
+  // 가장 많은 풍선의 갯수 삭제 함수
   function removeMax() {
     let maxNumber = Math.max(...balloonData);
     let maxIndex = balloonData.indexOf(maxNumber);
-    console.log(balloonData);
     if (maxIndex !== -1) {
-      console.log(maxIndex);
       balloonData.splice(maxIndex, 1);
     }
-    // setBalloonData(balloonData);
-    console.log('지운 뒤 결과물', balloonData);
   }
 
+  // 인접한 풍선의 갯수 카운트 함수
   function count(gridData) {
     const rows = gridData?.length;
     const cols = gridData[0]?.length;
@@ -52,6 +51,7 @@ export default function Game() {
     const queue = [];
     const queue2 = [];
 
+    // bfs 탐색을 통해 인접한 풍선의 수 카운트 & balloonData에 저장
     for (let i = 0; i < gridData.length; i++) {
       for (let j = 0; j < gridData[0].length; j++) {
         if (gridData[i][j].balloon !== '🎈' || visited[i][j]) {
@@ -77,7 +77,6 @@ export default function Game() {
 
           let adcount = queue2.length;
           balloonData.push(adcount);
-          console.log('>', i, j, adcount, balloonData);
           while (queue2.length > 0) {
             const [x, y] = queue2.shift();
             gridData[x][y].count = adcount;
@@ -85,8 +84,6 @@ export default function Game() {
         }
       }
     }
-
-    console.log('grid data', gridData);
   }
 
   function initGame(gridSize) {
@@ -94,41 +91,35 @@ export default function Game() {
     gridTable.innerHTML = '';
     let gridData = [];
 
-    // 9x9
     for (let i = 1; i <= gridSize; i++) {
       let row = document.createElement('tr');
       let rowData = [];
 
       for (let j = 1; j <= gridSize; j++) {
         let cell = document.createElement('td');
+        // 40% 확률로 풍선을 채워줌
         let balloon = Math.random() < 0.4 ? '🎈' : ' ';
         cell.textContent = balloon;
 
         let cellData = {
           balloon: balloon,
-          adjacentBalloons: 0,
+          count: 0,
         };
         rowData.push(cellData);
 
-        // click event
         cell.addEventListener('click', function () {
           let temp = getMax();
           if (this.textContent === '🎈') {
             let rowIndex = this.parentNode.rowIndex;
             let cellIndex = this.cellIndex;
-            console.log(rowIndex, cellIndex, gridData[rowIndex][cellIndex].count, temp);
-            if (gridData[rowIndex][cellIndex].count == temp) {
+            if (gridData[rowIndex][cellIndex].count === temp) {
               removeMax();
               temp = getMax();
-              console.log(balloonData);
-              console.log('잘 지워짐!');
-
               this.textContent = ' '; // 풍선 제거
               gridData[rowIndex][cellIndex].balloon = ' ';
               removeBalloons(gridData, rowIndex, cellIndex);
-              console.log(gridData[rowIndex][cellIndex]);
               if (balloonData.length == 0) {
-                finishGame();
+                winGame();
               }
             } else {
               looseGame();
@@ -145,6 +136,7 @@ export default function Game() {
     return gridData;
   }
 
+  // 상하좌우로 인접한 풍선 제거
   function removeBalloons(gridData, rowIndex, cellIndex) {
     const dx = [1, -1, 0, 0]; // (오른쪽, 왼쪽, 위, 아래)
     const dy = [0, 0, 1, -1];
@@ -170,15 +162,16 @@ export default function Game() {
         }
       }
     }
-    console.log('grid data updated', gridData);
     setGridData(gridData);
   }
 
-  function finishGame() {
+  // 이기고 게임 끝 
+  function winGame() {
     const popUp = document.querySelector('.pop-up1');
     popUp.classList.remove('pop-up--hide');
   }
 
+  // 지고 게임 끝
   function looseGame() {
     const popUp = document.querySelector('.pop-up2');
     popUp.classList.remove('pop-up--hide');
