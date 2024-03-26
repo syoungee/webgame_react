@@ -11,6 +11,7 @@ export default function Game() {
     setGridData(initializedGridData);
     // balloonData = [];
     count(initializedGridData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gridSize]);
 
   const handleInputChange = (event) => {
@@ -165,7 +166,7 @@ export default function Game() {
     setGridData(gridData);
   }
 
-  // 이기고 게임 끝 
+  // 이기고 게임 끝
   function winGame() {
     const popUp = document.querySelector('.pop-up1');
     popUp.classList.remove('pop-up--hide');
