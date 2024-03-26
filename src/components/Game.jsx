@@ -118,7 +118,7 @@ export default function Game() {
               this.textContent = ' '; // 풍선 제거
               gridData[rowIndex][cellIndex].balloon = ' ';
               removeBalloons(gridData, rowIndex, cellIndex);
-              if (balloonData.length == 0) {
+              if (balloonData.length === 0) {
                 winGame();
               }
             } else {
