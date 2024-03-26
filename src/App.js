@@ -13,7 +13,11 @@ function App() {
   return (
     <div className={darkMode ? 'App dark' : 'App'}>
       <h2>Remove Balloons!</h2>
-      <button onClick={toggleDarkMode} className="darkmode-btn">{darkMode ? 'light mode' : 'dark mode'}</button>
+      <label className="switch">
+        <input type="checkbox" onChange={toggleDarkMode} checked={darkMode} />
+        <span className="slider round"></span>
+      </label>
+      <p>{darkMode ? '다크 모드' : '라이트 모드'}</p>
       <div className="board">
         <Game />
         <Popup message="You have WON!!!" className="pop-up1 pop-up--hide" />
