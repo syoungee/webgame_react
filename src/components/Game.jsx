@@ -2,15 +2,21 @@ import React, { useState, useEffect } from 'react';
 import Grid from './Grid';
 
 export default function Game() {
+  const [gridSize, setGridSize] = useState(0);
   const [gridData, setGridData] = useState([]);
   let balloonData = [];
 
   useEffect(() => {
-    const initializedGridData = initGame();
+    const initializedGridData = initGame(gridSize);
     setGridData(initializedGridData);
     balloonData = [];
     count(initializedGridData);
-  }, []);
+  }, [gridSize]);
+
+  const handleInputChange = (event) => {
+    const size = parseInt(event.target.value);
+    setGridSize(size);
+  };
 
   function getMax() {
     let maxNumber = Math.max(...balloonData);
@@ -35,8 +41,8 @@ export default function Game() {
   }
 
   function count(gridData) {
-    const rows = gridData.length;
-    const cols = gridData[0].length;
+    const rows = gridData?.length;
+    const cols = gridData[0]?.length;
 
     const dx = [1, -1, 0, 0]; // (오른쪽, 왼쪽, 위, 아래)
     const dy = [0, 0, 1, -1];
@@ -83,17 +89,17 @@ export default function Game() {
     console.log('grid data', gridData);
   }
 
-  function initGame() {
+  function initGame(gridSize) {
     let gridTable = document.getElementById('grid');
     gridTable.innerHTML = '';
     let gridData = [];
 
     // 9x9
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= gridSize; i++) {
       let row = document.createElement('tr');
       let rowData = [];
 
-      for (let j = 1; j <= 5; j++) {
+      for (let j = 1; j <= gridSize; j++) {
         let cell = document.createElement('td');
         let balloon = Math.random() < 0.4 ? '🎈' : ' ';
         cell.textContent = balloon;
@@ -162,11 +168,17 @@ export default function Game() {
     setGridData(gridData);
   }
 
-  function finishGame(win){
+  function finishGame(win) {
     const popUp = document.querySelector('.pop-up');
     popUp.classList.remove('pop-up--hide');
   }
-  
 
-  return <Grid gridData={gridData} />;
+  return (
+    <>
+      <input className="input-box" type="number" value={gridSize} onChange={handleInputChange} placeholder="Enter grid size" />
+      <div className="game-board">
+        <Grid gridData={gridData} />
+      </div>
+    </>
+  );
 }
