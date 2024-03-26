@@ -13,7 +13,9 @@ h2 {
   align-items: center;
 }
 
-.pop-up {
+.pop-up1,
+.pop-up2,
+.pop-up--hide {
   position: absolute;
   top: 0;
   left: 0;
@@ -29,4 +31,10 @@ h2 {
 
 .pop-up--hide {
   display: none;
+}
+
+.pop-up__message {
+  display: block;
+  font-size: 28px;
+  color: white;
 }

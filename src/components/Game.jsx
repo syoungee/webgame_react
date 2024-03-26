@@ -122,10 +122,16 @@ export default function Game() {
               temp = getMax();
               console.log(balloonData);
               console.log('잘 지워짐!');
+
               this.textContent = ' '; // 풍선 제거
               gridData[rowIndex][cellIndex].balloon = ' ';
               removeBalloons(gridData, rowIndex, cellIndex);
               console.log(gridData[rowIndex][cellIndex]);
+              if (balloonData.length == 0) {
+                finishGame();
+              }
+            } else {
+              looseGame();
             }
           }
         });
@@ -168,8 +174,13 @@ export default function Game() {
     setGridData(gridData);
   }
 
-  function finishGame(win) {
-    const popUp = document.querySelector('.pop-up');
+  function finishGame() {
+    const popUp = document.querySelector('.pop-up1');
+    popUp.classList.remove('pop-up--hide');
+  }
+
+  function looseGame() {
+    const popUp = document.querySelector('.pop-up2');
     popUp.classList.remove('pop-up--hide');
   }
 
