@@ -1,14 +1,14 @@
 import React from 'react';
 import BalloonCell from './BalloonCell';
 
-export default function Grid({ gridData, onCellClick }) {
+export default function Grid({ gridData }) {
   return (
     <table id="grid">
       <tbody>
         {gridData.map((rowData, rowIndex) => {
           <tr key={rowIndex}>
             {rowData.map((cellData, cellIndex) => (
-              <BalloonCell key={cellIndex} balloon={cellData.balloon} onClick={() => onCellClick(rowIndex, cellIndex)}></BalloonCell>
+              <BalloonCell key={cellIndex} balloon={cellData.balloon}></BalloonCell>
             ))}
           </tr>;
         })}
